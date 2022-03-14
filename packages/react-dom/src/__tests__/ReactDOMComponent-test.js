@@ -37,6 +37,26 @@ describe('ReactDOMComponent', () => {
       expect(container.firstChild.className).toEqual('');
     });
 
+    it('should recognize class names and style', () => {
+      const container = document.createElement('div');
+      ReactDOM.render(<div />, container);
+
+      const thisStyle = {
+        display: 'inline-block',
+        left: '5px',
+        top: 3,
+        fontFamily: 'Helvetica',
+      };
+
+      ReactDOM.render(<div className={'test-class'} style={thisStyle} />, container);
+      
+      expect(container.firstChild.className).toEqual('test-class');
+      expect(container.firstChild.style.display).toEqual('inline-block');
+      expect(container.firstChild.style.left).toEqual('5px');
+      expect(container.firstChild.style.top).toEqual('3px');
+      expect(container.firstChild.style.fontFamily).toEqual('Helvetica');
+    })
+
     it('should gracefully handle various style value types', () => {
       const container = document.createElement('div');
       ReactDOM.render(<div style={{}} />, container);
@@ -1536,6 +1556,27 @@ describe('ReactDOMComponent', () => {
 
       expect(onError).toHaveBeenCalledTimes(1);
     });
+  });
+
+  it('should receive an error event on <img> elements nested in another element', () => {
+    const container = document.createElement('div');
+    const onError = jest.fn();
+
+    ReactDOM.render(
+      <div className="test-container">
+        <img src="test-img.png" onError={onError} width="500" height="500" />
+      </div>,
+      container,
+    );
+
+    const errorEvent = document.createEvent('Event');
+    const img = container.getElementsByTagName('img')[0];
+
+    errorEvent.initEvent('error', false, false);
+    img.dispatchEvent(errorEvent);
+
+    expect(onError).toHaveBeenCalledTimes(1);
+    expect(container.firstChild.className).toEqual('test-container');
   });
 
   describe('updateComponent', () => {
