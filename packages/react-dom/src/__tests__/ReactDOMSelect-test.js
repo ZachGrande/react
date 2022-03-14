@@ -527,8 +527,7 @@ describe('ReactDOMSelect', () => {
     expect(options[2].selected).toBe(true);
   });
   
-  //// from scratch
-  it('ADDED should support server-side rendering and switching to multiple', () => {
+  it('should support server-side rendering and switching to multiple', () => {
     const stub = (
       <select defaultValue="chocolate">
         <option value="strawberry">strawberry!</option>
@@ -541,7 +540,6 @@ describe('ReactDOMSelect', () => {
     container.innerHTML = ReactDOMServer.renderToString(stub);
     const options = container.firstChild.options;
 
-    // first check as not multiple
     expect(options[0].value).toBe('strawberry');
     expect(options[0].selected).toBe(false);
     expect(options[1].value).toBe('vanilla');
@@ -549,7 +547,6 @@ describe('ReactDOMSelect', () => {
     expect(options[2].value).toBe('chocolate');
     expect(options[2].selected).toBe(true);
 
-    // switch to multiple
     const stub2 = (
     <select multiple={true} value={['strawberry', 'chocolate']} onChange={noop}>
       <option value="strawberry">strawberry!</option>
@@ -560,7 +557,6 @@ describe('ReactDOMSelect', () => {
     container.innerHTML = ReactDOMServer.renderToString(stub2);
     const options2 = container.firstChild.options;
 
-    // check with multiple values
     expect(options2[0].value).toBe('strawberry');
     expect(options2[0].selected).toBe(true);
     expect(options2[1].value).toBe('vanilla');
@@ -568,9 +564,8 @@ describe('ReactDOMSelect', () => {
     expect(options2[2].value).toBe('chocolate');
     expect(options2[2].selected).toBe(true);
   });
-  ////
 
-  it('ADDED should support server-side rendering and switching from multiple', () => {
+  it('should support server-side rendering and switching from multiple', () => {
     const stub = (
     <select multiple={true} value={['vanilla', 'chocolate']} onChange={noop}>
       <option value="strawberry">strawberry!</option>
@@ -583,7 +578,6 @@ describe('ReactDOMSelect', () => {
     container.innerHTML = ReactDOMServer.renderToString(stub);
     const options = container.firstChild.options;
 
-    // first check as multiple
     expect(options[0].value).toBe('strawberry');
     expect(options[0].selected).toBe(false);
     expect(options[1].value).toBe('vanilla');
@@ -591,7 +585,6 @@ describe('ReactDOMSelect', () => {
     expect(options[2].value).toBe('chocolate');
     expect(options[2].selected).toBe(true);
 
-    // switch to non-multiple
     const stub2 = (
     <select defaultValue="vanilla">
       <option value="strawberry">strawberry!</option>
@@ -602,7 +595,6 @@ describe('ReactDOMSelect', () => {
     container.innerHTML = ReactDOMServer.renderToString(stub2);
     const options2 = container.firstChild.options;
 
-    // check with multiple values
     expect(options2[0].value).toBe('strawberry');
     expect(options2[0].selected).toBe(false);
     expect(options2[1].value).toBe('vanilla');
